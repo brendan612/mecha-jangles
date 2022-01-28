@@ -11,7 +11,7 @@ module.exports = {
         let victim = interaction.options.getMentionable('victim');
 
         if (victim.voice){
-            await interaction.client.VCM.PlaySound(victim.voice.channel.id, interaction.guild.id, interaction.guild.voiceAdapterCreator, './assets/sounds/funny_sound.mp3 ');
+            await interaction.client.VCM.PlaySound(victim.voice.channel.id, interaction.guild.id, interaction.guild.voiceAdapterCreator, '../assets/sounds/funny_sound.mp3 ');
             await interaction.reply({ content: `${victim.nickname || victim.displayName} has received a fart`, ephemeral: true });
         }
     },
