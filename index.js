@@ -24,7 +24,6 @@ class MechaJangles {
     }
 
     async launch(){
-        client.prefix = prefix;
         client.commands = new Collection();
         client.DB = mongoclient;
         client.SpamMap = new Map();
