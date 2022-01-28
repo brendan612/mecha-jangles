@@ -50,6 +50,10 @@ class VoiceConnectionManager{
             if (callback !== undefined) callback();
         });
 
+        this.player.on('error', error => {
+            console.error(`Error: ${error.message} with resource ${error.resource.metadata.title}`);
+        })
+
         const funny_sound = createAudioResource(filePath);
         console.log(filePath, funny_sound);
         this.player.play(funny_sound);
