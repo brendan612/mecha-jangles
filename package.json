@@ -4,8 +4,7 @@
   "description": "A superior version of Jangles",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "webpack"
+    "start": "node index.js"
   },
   "author": "jangles",
   "license": "ISC",
