@@ -9,6 +9,7 @@ class ServerSettings {
         this.voiceThreadsChannelID = settings.voiceThreadsChannelID;
         this.auditLogsChannelID = settings.auditLogsChannelID;
         this.guildID = settings.guildID;
+        this.clientID = settings.clientID;
     }
 }
 module.exports = { ServerSettings }

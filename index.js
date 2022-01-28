@@ -2,7 +2,6 @@ const { Client, Collection, Intents } = require('discord.js');
 const client = new Client({ intents: [ Intents.FLAGS.GUILDS, 
                                         Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
                             partials: [ "CHANNEL", "GUILD_MEMBER", "MESSAGE" , "USER", "REACTION"]});
-const { prefix, token, guildId } = require('./config.json');
 const Enmap = require('enmap');
 const fs = require('fs');
 const { join } = require('path');
@@ -18,7 +17,6 @@ const mongoclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopo
 
 class MechaJangles {
     constructor(){
-        this.config = require('./config.json');
         this.commands = new Collection();
         this.events = [];
 
@@ -92,7 +90,7 @@ class MechaJangles {
     }
 
     async setPermissions(){
-        const commands = await client.guilds.cache.get(guildId).commands.fetch();
+        const commands = await client.guilds.cache.get(client.ServerSettings.guildID).commands.fetch();
         
         for(let [key, value] of commands){
             console.log(value.name, value.id);
@@ -118,7 +116,7 @@ class MechaJangles {
 
         /* #region Shutup Permissions */ 
 
-        const shutupCommand = await client.guilds.cache.get(guildId)?.commands.fetch('932374162134147102');
+        const shutupCommand = await client.guilds.cache.get(client.ServerSettings.guildID)?.commands.fetch('932374162134147102');
 
         const shutupPermissions = [
             {
@@ -138,7 +136,7 @@ class MechaJangles {
         /* #endregion */
 
         /* #region Fart Permissions */ 
-        const fartCommand = await client.guilds.cache.get(guildId)?.commands.fetch('932371424830685224');
+        const fartCommand = await client.guilds.cache.get(client.ServerSettings.guildID)?.commands.fetch('932371424830685224');
 
         await fartCommand.permissions.add({ permissions: staffPermissions });
         /* #endregion */
@@ -151,7 +149,7 @@ client.on('ready', () => {
     db.connect(err => {
         const collection = db.db("mecha-jangles").collection("polls").find({ });
         collection.forEach(function(doc){
-            client.guilds.cache.get(guildId).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
+            client.guilds.cache.get(client.ServerSettings.guildID).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
         }); 
 
     });
