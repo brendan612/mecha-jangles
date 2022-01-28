@@ -12,8 +12,7 @@ const ServerSettings = require("./serverSettings.js").ServerSettings;
 const { MongoClient } = require('mongodb');
 const poll = require('./slash/poll');
 const { Audit } = require('./audit');
-const uri = process.env.db;
-const mongoclient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoclient = new MongoClient(process.env.db, { useNewUrlParser: true, useUnifiedTopology: true });
 
 class MechaJangles {
     constructor(){
