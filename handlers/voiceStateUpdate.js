@@ -86,25 +86,25 @@ async function onJoin(client, oldState, newState){
     if (member.roles.cache.has(fun.id)){
         // if (onCD(member.id)) return; //add internal cooldown so users cant spam the bot joining
         if (member.user.id === "105858401497546752"){ //jangles
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/hello.mp4", 0);
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/hello.mp4", 0);
         } else if (member.user.id === '101755961496076288'){//erne
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/erne_sus.mp4", 2500);
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/erne_sus.mp4", 2500);
         } else if (member.user.id === '317753455190081536') { //robin
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/no.mp3", 2500, false, function(){
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/no.mp3", 2500, false, function(){
                 guild.members.fetch(member.user.id).then(member => {
                     // member.voice.setChannel(null);
                 });
             });
         } else if (member.user.id === '231605256398569474'){ //christine
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/do_not_come.mp4", 2500);
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/do_not_come.mp4", 2500);
         } else if (member.user.id === '132342534641811457'){ //ace
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/ace_intro.mp4", 2500);
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/ace_intro.mp4", 2500);
         } else if (member.user.id === '100044596725170176'){ //lorenz
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/lorenz_intro.mp4", 2500);
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/lorenz_intro.mp4", 2500);
         } else if (member.user.id === '477226464740245506'){ //ring
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/ring_intro.mp4", 2500);
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/ring_intro.mp4", 2500);
         } else {
-            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/kick_your_ass.mp3", 2500);
+            client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/kick_your_ass.mp3", 2500);
         }
     }
     console.log(newState.member.user.username + " joined voice");
@@ -152,7 +152,7 @@ function onStartStream(client, oldState, newState){
     let guild = member.guild;
     let fun = guild.roles.cache.find((role) => role.name === "Fun");
     if (member.roles.cache.has(fun.id)){
-        client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/turn_that_off.mp3", 2500);
+        client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/turn_that_off.mp3", 2500);
     }
 
     console.log(member.user.username + " started stream");
@@ -170,7 +170,7 @@ function onStartVideo(client, oldState, newState){
     if (member.roles.cache.has(fun)){
         // if (onCD(member.id)) return; //add internal cooldown so users cant spam the bot joining
 
-        client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "../assets/sounds/my_eyes.mp4");
+        client.VCM.PlaySound(newState.channelId, guild.id, guild.voiceAdapterCreator, "./assets/sounds/my_eyes.mp4");
     }
     console.log(member.user.username + " started video");
 }

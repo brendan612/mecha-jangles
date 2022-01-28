@@ -40,7 +40,7 @@ class MechaJangles {
     }
 
     loadHandlers(){
-        fs.readdir("../handlers/", (err, files) => {
+        fs.readdir("./handlers/", (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
               const event = require(`./handlers/${file}`);
@@ -53,7 +53,7 @@ class MechaJangles {
     }
 
     loadCommands(){
-        fs.readdir("../slash/", (err, files) => {
+        fs.readdir("./slash/", (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
               if (!file.endsWith(".js")) return;
@@ -61,7 +61,7 @@ class MechaJangles {
               client.commands.set(command.data.name, command);
             });
         });
-        fs.readdir("../commands/", (err, files) => {
+        fs.readdir("./commands/", (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
               if (!file.endsWith(".js")) return;
