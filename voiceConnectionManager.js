@@ -55,7 +55,6 @@ class VoiceConnectionManager{
         })
 
         const funny_sound = createAudioResource(filePath);
-        console.log(filePath, funny_sound);
         this.player.play(funny_sound);
         console.log("audio has started");
         this.connection.subscribe(this.player);

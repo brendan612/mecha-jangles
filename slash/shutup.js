@@ -16,6 +16,7 @@ module.exports = {
                 interaction.guild.members.fetch(user).then(member => {
                     member.voice.setChannel(null);
                 });
+                console.log(interaction);
                 await interaction.reply({ content: `${user.nickname || user.displayName} has been kicked`, ephemeral: true });
             });
         }

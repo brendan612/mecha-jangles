@@ -12,6 +12,7 @@ module.exports = {
 
         if (victim.voice){
             interaction.client.VCM.PlaySound(victim.voice.channel.id, interaction.guild.id, interaction.guild.voiceAdapterCreator, './assets/sounds/funny_sound.mp3', 0, false, async function(){
+                console.log(interaction);
                 await interaction.reply({ content: `${victim.nickname || victim.displayName} has received a fart`, ephemeral: true });
             });
         }
