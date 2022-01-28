@@ -179,10 +179,4 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-const aws = require('aws-sdk');
-
-let s3 = new aws.S3({
-  token: process.env.token
-});
-
-client.login(s3.token);
+client.login(process.env.token);
