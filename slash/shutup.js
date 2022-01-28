@@ -12,7 +12,7 @@ module.exports = {
         let user = interaction.options.getMentionable('user');
 
         if (user.voice){
-            interaction.client.VCM.PlaySound(user.voice.channel.id, interaction.guild.id, interaction.guild.voiceAdapterCreator, './assets/sounds/shutup.mp3 ', 0, false, async function(){
+            await interaction.client.VCM.PlaySound(user.voice.channel.id, interaction.guild.id, interaction.guild.voiceAdapterCreator, './assets/sounds/shutup.mp3 ', 0, false, async function(){
                 interaction.guild.members.fetch(user).then(member => {
                     member.voice.setChannel(null);
                 });
