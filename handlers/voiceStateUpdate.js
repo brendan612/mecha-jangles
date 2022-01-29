@@ -148,6 +148,7 @@ function onUnmute(client, oldState, newState){
 }
 
 function onStartStream(client, oldState, newState){
+    return;
     let member = newState.member;
     let guild = member.guild;
     let fun = guild.roles.cache.find((role) => role.name === "Fun");
@@ -163,6 +164,7 @@ function onEndStream(client, oldState, newState){
 }
 
 function onStartVideo(client, oldState, newState){
+    return;
     let member = newState.member;
     let guild = member.guild;
     let fun = guild.roles.cache.find((role) => role.name === "Fun").id;

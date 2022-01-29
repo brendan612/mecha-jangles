@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Client, Collection, Intents } = require('discord.js');
 const client = new Client({ intents: [ Intents.FLAGS.GUILDS, 
                                         Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
@@ -12,7 +13,14 @@ const ServerSettings = require("./serverSettings.js").ServerSettings;
 const { MongoClient } = require('mongodb');
 const poll = require('./slash/poll');
 const { Audit } = require('./audit');
-const mongoclient = new MongoClient(process.env.db, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const dbURI = process.env.dbURI;
+const dbName = process.env.dbName;
+const botToken = process.env.token;
+const clientID = process.env.clientID;
+const guildID = process.env.guildID;
+    
+let mongoclient = new MongoClient(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 class MechaJangles {
     constructor(){
@@ -28,13 +36,13 @@ class MechaJangles {
         client.SpamMap = new Map();
         client.SpamLimit = 5;
         client.SpamDiff = 5000;
-        client.ServerSettings = new ServerSettings();
+        client.ServerSettings = new ServerSettings(client, dbName, guildID, clientID);
         client.Audit = new Audit(client.ServerSettings.guildID, client.ServerSettings.auditLogsChannelID);
         client.VCM = new VoiceConnectionManager();
         client.VoiceChannelManager = new VoiceChannelManager(client);
         this.loadCommands();
         this.loadHandlers();
-        this.listenForCommands();
+        // this.listenForCommands();
         this.setPermissions();
     }
 
@@ -47,8 +55,6 @@ class MechaJangles {
               client.on(eventName, event.bind(null, client));
             });
         });
-
-        console.log("Loaded handlers");
     }
 
     loadCommands(){
@@ -72,22 +78,23 @@ class MechaJangles {
         });
     }
 
-    listenForCommands(){
-        const readline = require('readline').createInterface({
-            input: process.stdin,
-            output: process.stdout
-        })
-        readline.question(``, data => {
-            console.log(data);
-            let guild = client.guilds.cache.find((guild) => guild.id === "868198840778498068");
-            let channel = guild.channels.cache.find((channel) => channel.name === "bot-self-commands");
-            channel.send(data);
-            readline.close();
-            this.listenForCommands();
-        });
-    }
+    // listenForCommands(){
+    //     const readline = require('readline').createInterface({
+    //         input: process.stdin,
+    //         output: process.stdout
+    //     })
+    //     readline.question(``, data => {
+    //         console.log(data);
+    //         let guild = client.guilds.cache.find((guild) => guild.id === guildID);
+    //         let channel = guild.channels.cache.find((channel) => channel.name === "bot-self-commands");
+    //         channel.send(data);
+    //         readline.close();
+    //         this.listenForCommands();
+    //     });
+    // }
 
     async setPermissions(){
+        return;
         const commands = await client.guilds.cache.get(client.ServerSettings.guildID).commands.fetch();
         
         for(let [key, value] of commands){
@@ -145,7 +152,7 @@ client.on('ready', () => {
     let db = mongoclient;
 
     db.connect(err => {
-        const collection = db.db("mecha-jangles").collection("polls").find({ });
+        const collection = db.db(dbName).collection("polls").find({ });
         collection.forEach(function(doc){
             client.guilds.cache.get(client.ServerSettings.guildID).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
         }); 
@@ -176,4 +183,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 
-client.login(process.env.token);
+client.login(botToken);

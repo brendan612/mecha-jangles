@@ -51,11 +51,12 @@ module.exports = {
         async function setName(interaction){
             let name = interaction.options.getString('name');
             if (member.voice){
-                await interaction.client.VoiceChannelManager.NameVoiceChannel(interaction.guild, member.voice.channel.id, name, member).then(async () => {
-                    console.log(interaction.guild);
-                    await interaction.client.VoiceChannelManager.SetThreadName(interaction.guild, interaction.client.ServerSettings.voiceThreadsChannelID, settings.voiceThreadChannelID, name);
-                    await interaction.reply({ content: `Your channel name has been updated to: ${name}`, ephemeral: true });
+                await interaction.client.VoiceChannelManager.SetThreadName(interaction.guild, interaction.client.ServerSettings.voiceThreadsChannelID, settings.voiceThreadChannelID, name).then(async () => {
+                    await interaction.client.VoiceChannelManager.NameVoiceChannel(interaction.guild, member.voice.channel.id, name, member).then(async () => {
+                        await interaction.reply({ content: `Your channel name has been updated to: ${name}`, ephemeral: true });
+                    });
                 });
+                
             } else {
                 await interaction.reply({ content: "You need to be in a voice channel to use this command", ephemeral: true });
             }

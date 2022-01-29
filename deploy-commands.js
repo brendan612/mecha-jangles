@@ -1,7 +1,13 @@
+require('dotenv').config();
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId, prefix, token } = require('./config.json');
 const fs = require('fs');
+
+const dbURI = process.env.dbURI;
+const db = process.env.db;
+const botToken = process.env.token;
+const clientID = process.env.clientID;
+const guildID = process.env.guildID;
 
 const commands = [];
 const commandFiles = fs.readdirSync('./slash').filter(file => file.endsWith('.js'));
@@ -12,8 +18,7 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 }
 
-const rest = new REST({ version: '9' }).setToken(token);
-
-rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+const rest = new REST({ version: '9' }).setToken(botToken);
+rest.put(Routes.applicationGuildCommands(clientID, guildID), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);

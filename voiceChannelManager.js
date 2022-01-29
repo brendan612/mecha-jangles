@@ -174,8 +174,9 @@ class VoiceChannelManager {
     }
 
     async SetThreadName(guild, channel, threadID, name){
+        console.log("here thread name");
         const threadsChannel = await guild.channels.fetch(channel);
-        const thread = threadsChannel.threads.fetch(threadID);
+        const thread = await threadsChannel.threads.fetch(threadID);
         await thread.setName(name);
     }
 }

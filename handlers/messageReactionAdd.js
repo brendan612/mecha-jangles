@@ -15,7 +15,7 @@ module.exports = (client, reaction, user) => {
 
     if (message.interaction != null){
         if (message.interaction.commandName = 'poll'){
-            const botReactions = message.reactions.cache.filter(reaction => reaction.users.cache.has("769325345350352916"));
+            const botReactions = message.reactions.cache.filter(reaction => reaction.users.cache.has(client.ServerSettings.clientID));
             if (botReactions.size == 0) removeReaction(reaction);
         }
     }

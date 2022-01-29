@@ -32,11 +32,11 @@ module.exports = {
         let db = interaction.client.DB;
 
         const REACTIONS = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
-
+        console.log(creator.nickname || creator.displayName);
         const embed = new MessageEmbed()
         .setTitle(`${pollName}`)
         .setDescription(`Ends: ${displayEndDate}`)
-        .setFooter({ text: "Created by: " + creator.nickname || creator.displayName, iconURL: icon });
+        .setFooter({ text: "Created by: " + (creator.nickname || creator.displayName), iconURL: icon });
 
         if (endDate != null){
             let poll_options = [];
@@ -64,7 +64,7 @@ module.exports = {
             }
 
             db.connect(err => {
-                const collection = db.db("mecha-jangles").collection("polls");
+                const collection = db.db(interaction.client.ServerSettings.dbName).collection("polls");
                 
                 collection.insertOne(poll, function(err, res){
                     if (err) throw err;
@@ -107,7 +107,7 @@ module.exports = {
             let db = interaction.client.DB;
 
             db.connect(err => {
-                const collection = db.db("mecha-jangles").collection("polls");
+                const collection = db.db(interaction.client.ServerSettings.dbName).collection("polls");
                 const REACTIONS = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
                 collection.find({ messageID: message.id}).toArray(function(err, result){
                     if (err) throw err;
