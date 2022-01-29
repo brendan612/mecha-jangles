@@ -21,7 +21,7 @@ class ServerSettings {
             await db.connect();
             results = await db.db(dbName).collection("serverSettings").findOne();
             return results;
-        } catch {
+        } catch(e) {
             console.log(e);
         }
     }

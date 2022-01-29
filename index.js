@@ -152,11 +152,12 @@ client.on('ready', () => {
     let db = mongoclient;
 
     db.connect(err => {
-        const collection = db.db(dbName).collection("polls").find({ });
-        collection.forEach(function(doc){
-            client.guilds.cache.get(client.ServerSettings.guildID).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
-        }); 
-
+        const collection = db.db(dbName).collection("polls").find({ }).toArray();
+        if (collection.length > 0){
+            collection.forEach(function(doc){
+                client.guilds.cache.get(client.ServerSettings.guildID).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
+            }); 
+        }
     });
 
     new MechaJangles();
