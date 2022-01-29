@@ -11,6 +11,7 @@ class ServerSettings {
             this.voiceCreatorCategoryID =  settings.voiceCreatorCategoryID;
             this.voiceThreadsChannelID =  settings.voiceThreadsChannelID;
             this.auditLogsChannelID =  settings.auditLogsChannelID;
+            client.DB.close();
         });
     }
 
@@ -19,7 +20,6 @@ class ServerSettings {
         try{
             await db.connect();
             results = await db.db(dbName).collection("serverSettings").findOne();
-            await db.close();
             return results;
         } catch {
             console.log(e);
