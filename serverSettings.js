@@ -11,7 +11,6 @@ class ServerSettings {
             this.voiceCreatorCategoryID =  settings.voiceCreatorCategoryID;
             this.voiceThreadsChannelID =  settings.voiceThreadsChannelID;
             this.auditLogsChannelID =  settings.auditLogsChannelID;
-            client.DB.close();
         });
     }
 
