@@ -156,7 +156,10 @@ client.on('ready', () => {
     db.connect(err => {
         db.db(dbName).collection("polls").find({ }).toArray().then(collection => {
             if (collection.length > 0){
+                console.log(collection.length);
                 collection.forEach(function(doc){
+                    console.log(client.ServerSettings.guildID);
+                    console.log(doc);
                     client.guilds.cache.get(client.ServerSettings.guildID).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
                 }); 
             }
