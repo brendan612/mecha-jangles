@@ -6,31 +6,32 @@ module.exports = (client, reaction, user) => {
 
     if (user.bot) return;
 
-    if (!REACTIONS.includes(reaction.emoji.name)){
-        console.log("invalid emoji");
-         removeReaction(reaction); return;
-    }
-
     let message = reaction.message;
 
     if (message.interaction != null){
-        if (message.interaction.commandName = 'poll'){
+        if (message.interaction.commandName === 'poll'){
+            
+            if (!REACTIONS.includes(reaction.emoji.name)){
+                console.log("invalid emoji");
+                 removeReaction(reaction); return;
+            }
             const botReactions = message.reactions.cache.filter(reaction => reaction.users.cache.has(client.ServerSettings.clientID));
-            if (botReactions.size == 0) removeReaction(reaction);
+            if (botReactions.size == 0){
+                removeReaction(reaction);
+                return;
+            }
+            const userReactions = message.reactions.cache.filter(reaction => reaction.users.cache.has(user.id));
+            try{
+                if (userReactions.size > 1){
+                    console.log("size", userReactions.size);
+                    removeReaction(reaction);
+                } else {
+                    updateEmbed(message);
+                }
+            } catch(e) {
+                console.log("error:\n"+ e.message);
+            }
         }
-    }
-
-    const userReactions = message.reactions.cache.filter(reaction => reaction.users.cache.has(user.id));
-
-    try{
-        if (userReactions.size > 1){
-            removeReaction(reaction);
-        } else {
-
-            updateEmbed(message);
-        }
-    } catch(e) {
-        console.log("error:\n"+ e.message);
     }
 
     async function removeReaction(reaction){

@@ -13,6 +13,7 @@ const ServerSettings = require("./serverSettings.js").ServerSettings;
 const { MongoClient } = require('mongodb');
 const poll = require('./slash/poll');
 const { Audit } = require('./audit');
+const { Utilities } = require("./utilities");
 
 const dbURI = process.env.dbURI;
 const dbName = process.env.dbName;
@@ -40,6 +41,7 @@ class MechaJangles {
         client.Audit = new Audit(client.ServerSettings.guildID, client.ServerSettings.auditLogsChannelID);
         client.VCM = new VoiceConnectionManager();
         client.VoiceChannelManager = new VoiceChannelManager(client);
+        client.Utilities = new Utilities(client.DB, dbName);
         this.loadCommands();
         this.loadHandlers();
         // this.listenForCommands();
@@ -152,16 +154,16 @@ client.on('ready', () => {
     let db = mongoclient;
 
     db.connect(err => {
-        const collection = db.db(dbName).collection("polls").find({ }).toArray();
-        if (collection.length > 0){
-            collection.forEach(function(doc){
-                client.guilds.cache.get(client.ServerSettings.guildID).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
-            }); 
-        }
+        db.db(dbName).collection("polls").find({ }).toArray().then(collection => {
+            if (collection.length > 0){
+                collection.forEach(function(doc){
+                    client.guilds.cache.get(client.ServerSettings.guildID).channels.cache.get(doc.channelID).messages.fetch(doc.messageID);
+                }); 
+            }
+        });
     });
 
     new MechaJangles();
-
     client.user.setPresence({
         activities: [{ name: "with simulations"}],
         status: 'online'
@@ -183,5 +185,8 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
+client.on('error', (e) => {
+    client.Utilities.LogError(e);
+});
 
 client.login(botToken);
