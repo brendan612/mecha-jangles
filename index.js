@@ -11,7 +11,6 @@ const VoiceChannelManager = require("./voiceChannelManager.js").VoiceChannelMana
 const ServerSettings = require("./serverSettings.js").ServerSettings;
 
 const { MongoClient } = require('mongodb');
-const poll = require('./slash/poll');
 const { Audit } = require('./audit');
 const { Utilities } = require("./utilities");
 
@@ -44,8 +43,6 @@ class MechaJangles {
         client.Utilities = new Utilities(client.DB, dbName);
         this.loadCommands();
         this.loadHandlers();
-        // this.listenForCommands();
-        this.setPermissions();
     }
 
     loadHandlers(){
@@ -60,93 +57,14 @@ class MechaJangles {
     }
 
     loadCommands(){
-        fs.readdir("./slash/", (err, files) => {
-            if (err) return console.error(err);
-            files.forEach(file => {
-              if (!file.endsWith(".js")) return;
-              const command = require(`./slash/${file}`);
-              client.commands.set(command.data.name, command);
-            });
-        });
         fs.readdir("./commands/", (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
               if (!file.endsWith(".js")) return;
-              let props = require(`./commands/${file}`);
-              let commandName = file.split(".")[0];
-              client.commands.set(commandName, props);
-              this.commands.set(commandName,props);
+              const command = require(`./commands/${file}`);
+              client.commands.set(command.data.name, command);
             });
         });
-    }
-
-    // listenForCommands(){
-    //     const readline = require('readline').createInterface({
-    //         input: process.stdin,
-    //         output: process.stdout
-    //     })
-    //     readline.question(``, data => {
-    //         console.log(data);
-    //         let guild = client.guilds.cache.find((guild) => guild.id === guildID);
-    //         let channel = guild.channels.cache.find((channel) => channel.name === "bot-self-commands");
-    //         channel.send(data);
-    //         readline.close();
-    //         this.listenForCommands();
-    //     });
-    // }
-
-    async setPermissions(){
-        return;
-        const commands = await client.guilds.cache.get(client.ServerSettings.guildID).commands.fetch();
-        
-        for(let [key, value] of commands){
-            console.log(value.name, value.id);
-        }
-
-        const staffPermissions = [
-            {
-                id: '868276144015835137', //erne
-                type: 'ROLE',
-                permission: true,
-            },
-            {
-                id: '868276464431292507', //admin
-                type: 'ROLE',
-                permission: true,
-            },
-            {
-                id: '868276759328608286', //mod
-                type: 'ROLE',
-                permission: true,
-            },
-        ];
-
-        /* #region Shutup Permissions */ 
-
-        const shutupCommand = await client.guilds.cache.get(client.ServerSettings.guildID)?.commands.fetch('932374162134147102');
-
-        const shutupPermissions = [
-            {
-                id: '868276144015835137',
-                type: 'ROLE',
-                permission: true,
-            },
-        ];
-        
-        await shutupCommand.permissions.add({ permissions: shutupPermissions });
-        /* #endregion */
-
-        /* #region Poll Permissions */ 
-        // const pollCommand = await client.guilds.cache.get(guildId)?.commands.fetch('932374162134147102');
-
-        // await pollCommand.permissions.add({ permissions: staffPermissions });
-        /* #endregion */
-
-        /* #region Fart Permissions */ 
-        const fartCommand = await client.guilds.cache.get(client.ServerSettings.guildID)?.commands.fetch('932371424830685224');
-
-        await fartCommand.permissions.add({ permissions: staffPermissions });
-        /* #endregion */
     }
 }
 
@@ -169,8 +87,9 @@ client.on('ready', () => {
     });
 
     new MechaJangles();
+
     client.user.setPresence({
-        activities: [{ name: "with simulations"}],
+        activities: [{ name: "you", type: "WATCHING"}],
         status: 'online'
     });
 });

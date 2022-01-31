@@ -4,7 +4,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ttt')
 		.setDescription('Play a game of Tic Tac Toe!')
-        .addMentionableOption(option => option.setName("opponent").setDescription("Your opponent").setRequired(true)),
+        .addMentionableOption(option => option.setName("opponent").setDescription("Your opponent").setRequired(true))
+        .setDefaultPermission(false),
 	async execute(interaction) {
         await interaction.deferReply();
 		const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
@@ -83,21 +84,16 @@ module.exports = {
             );
         }
 
-        const row = new MessageActionRow()
-            .addComponents(buttons[0], buttons[1], buttons[2]);
-        const row2 = new MessageActionRow()
-            .addComponents(buttons[3],buttons[4], buttons[5]);
-        const row3 = new MessageActionRow()
-            .addComponents(buttons[6], buttons[7], buttons[8]);
+        
 
         if (interaction.isCommand()){
             beginGame();
         }
     
         async function beginGame(){
-            await interaction.editReply({embeds: [embed], components: [row, row2, row3] });
+            await interaction.editReply({embeds: [embed], components: createMessageActionRows(buttons) });
 
-            const collector = interaction.channel.createMessageComponentCollector({  time: 15000 });
+            const collector = interaction.channel.createMessageComponentCollector();
             collector.on('collect', async i => {
                 await i.deferUpdate();
                 processInteraction(i)
@@ -150,12 +146,22 @@ module.exports = {
             } else {
                 if (currentTurn.id === player1.id) currentTurn = player2;
                 else currentTurn = player1;
+                buttons[selectedSquare-1].setDisabled(true);
                 updateEmbed.setFooter("Current Turn: " + currentTurn.playerName);
             }
 
-            await interaction.editReply({embeds: [updateEmbed]});
+            await interaction.editReply({embeds: [updateEmbed], components: createMessageActionRows(buttons)});
         }
 
+        function createMessageActionRows(buttons){
+            const row = new MessageActionRow()
+                .addComponents(buttons[0], buttons[1], buttons[2]);
+            const row2 = new MessageActionRow()
+                .addComponents(buttons[3],buttons[4], buttons[5]);
+            const row3 = new MessageActionRow()
+                .addComponents(buttons[6], buttons[7], buttons[8]);
+            return [row, row2, row3];
+        }
         function checkWin(board, currentTurn){
             const winMap = [123, 456, 789, 147, 258, 369, 357, 159];
 

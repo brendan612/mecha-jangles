@@ -1,44 +1,48 @@
-exports.run = (client, message, [channelId]) => {
-    const guild = message.guild;
-    const channel = message.member.voice.channel;
-    const textChannel = message.channel;
-    const member = message.member;
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
-    // let erne = guild.roles.cache.find((role) => role.name === "Erne").id;
-    // let admin = guild.roles.cache.find((role) => role.name === "Admin").id;
-    // let mod = guild.roles.cache.find((role) => role.name === "Moderator").id;
-    // let id = '231605256398569474'; 
-    if (true){
-        message.delete();
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('snap')
+		.setDescription('Balance the scales')
+        .setDefaultPermission(false),
+	async execute(interaction) {
+        const member = interaction.member;
+        const guild = interaction.guild;
 
-        let snapChannel = (channelId !== undefined && channelId !== null) ? guild.channels.cache.find(channelId) : channel;
-        let memberCount = snapChannel.members.size;
-
-        let kickedMembers = [];
-        let members = [];
-        snapChannel.members.forEach(x => members.push(x));
-
-        for (let i = 0; i < snapChannel.members.size; i++){
-            if (memberCount <= (snapChannel.members.size / 2)){
-                break;
-            }
- 
-            let index = Math.floor(Math.random()*memberCount);
-            while(kickedMembers.includes(members[index])){
-                index = Math.floor(Math.random()*memberCount);
-            }
-            var toKick = members[index];
-            kickedMembers.push(toKick);
-            memberCount--;
+        if (member.voice.channelID === null){
+            await interaction.reply({ content: "You need to be in a voice channel to use this command", ephemeral: true });
         }
+        if (member.voice.channelID !== null){
+            let snapChannel = member.voice.channel;
+            let memberCount = snapChannel.members.size;
 
-        client.VCM.PlaySound(snapChannel.id, guild.id, guild.voiceAdapterCreator, '../bot/assets/sounds/im_going_to_enjoy_it.mp4', 0, false, function(){
-            for(let kicked of kickedMembers){
-                textChannel.send(kicked.user.username + " was snapped out of existence.");
-                guild.members.fetch(kicked.user.id).then(member => {
-                    member.voice.setChannel(null);
-                });
+            let kickedMembers = [];
+            let members = [];
+            snapChannel.members.forEach(x => members.push(x));
+
+            for (let i = 0; i < snapChannel.members.size; i++){
+                if (memberCount <= (snapChannel.members.size / 2)){
+                    break;
+                }
+    
+                let index = Math.floor(Math.random()*memberCount);
+                while(kickedMembers.includes(members[index])){
+                    index = Math.floor(Math.random()*memberCount);
+                }
+                var toKick = members[index];
+                kickedMembers.push(toKick);
+                memberCount--;
             }
-        });
-    }
-}
+
+            interaction.client.VCM.PlaySound(snapChannel.id, guild.id, guild.voiceAdapterCreator, '../bot/assets/sounds/im_going_to_enjoy_it.mp4', 0, false, async function(){
+                for(let kicked of kickedMembers){
+                    textChannel.send(kicked.user.username + " was snapped out of existence.");
+                    guild.members.fetch(kicked.user.id).then(member => {
+                        member.voice.setChannel(null);
+                    });
+                }
+                await interaction.reply({ content: `${victim.nickname || victim.displayName} has received a fart`, ephemeral: true })
+            });
+        }
+    },
+};
