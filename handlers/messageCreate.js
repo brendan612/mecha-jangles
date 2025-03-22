@@ -1,8 +1,12 @@
 module.exports = (client,message) => {
     const fs = require('fs');
-    const path = require('path');
     //Ignore all bots
-    if (message.author.bot && message.author.username !== "Mecha Jangles") return;
+    if (message.author.bot) return;
+    
+    if (message.guildId !== null || message.guildId !== undefined){
+        client.Wordle.ProcessGuess(client, message.author);
+        return;
+    }
 
     const bannedWordsSettings = JSON.parse(fs.readFileSync("bannedWordsList.json"));
     const autoResponder = JSON.parse(fs.readFileSync("autoResponder.json"));

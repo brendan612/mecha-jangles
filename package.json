@@ -1,44 +1,33 @@
 {
-  "name": "mecha-jangles",
-  "version": "1.0.0",
-  "description": "A superior version of Jangles",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "cmds" : "node deploy-commands.js"
-  },
-  "author": "jangles",
-  "license": "ISC",
-  "dependencies": {
-    "@discordjs/builders": "^0.8.2",
-    "@discordjs/opus": "^0.5.3",
-    "@discordjs/rest": "^0.1.0-canary.0",
-    "@discordjs/voice": "^0.5.5",
-    "@tensorflow-models/toxicity": "^1.2.2",
-    "@tensorflow/tfjs": "^3.11.0",
-    "@tensorflow/tfjs-node": "^3.11.0",
-    "chart.js": "^3.7.0",
-    "cronitor": "^2.2.3",
-    "discord-api-types": "^0.24.0",
-    "discord-tts": "^1.2.0",
-    "discord.js": "^13.5.1",
-    "dotenv": "^14.3.2",
-    "enmap": "^5.8.7",
-    "ffmpeg-static": "^4.4.0",
-    "libsodium-wrappers": "^0.7.9",
-    "moment": "^2.29.1",
-    "mongodb": "^4.3.0",
-    "node-cron": "^3.0.0",
-    "queue": "^6.0.2",
-    "quickchart-js": "^2.0.3",
-    "say": "^0.16.0",
-    "sequelize": "^6.12.5",
-    "sqlite3": "^5.0.2"
-  },
-  "devDependencies": {
-    "eslint": "^8.2.0"
-  },
-  "engines": {
-    "node": "16.x"
-  }
+	"name": "paris-bot",
+	"version": "1.0.0",
+	"description": "Utility Bot for the League of Paris Discord Server",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"cmds": "node deploy-commands.js"
+	},
+	"author": "jangles",
+	"license": "ISC",
+	"dependencies": {
+		"@supabase/supabase-js": "^2.49.1",
+		"axios": "^1.8.3",
+		"discord-api-types": "^0.24.0",
+		"discord-tts": "^1.2.0",
+		"discord.js": "^14.18.0",
+		"dotenv": "^14.3.2",
+		"enmap": "^5.8.7",
+		"express": "^4.21.2",
+		"jsonwebtoken": "^9.0.2",
+		"libsodium-wrappers": "^0.7.9",
+		"moment": "^2.29.1",
+		"spotify-web-api-node": "^5.0.2",
+		"uuid": "^11.1.0"
+	},
+	"devDependencies": {
+		"eslint": "^8.8.0"
+	},
+	"engines": {
+		"node": "16.x"
+	}
 }
